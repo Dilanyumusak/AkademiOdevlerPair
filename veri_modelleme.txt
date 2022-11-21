@@ -1,0 +1,81 @@
+Veri modelleme, işletmenin topladığı ve ürettiği tüm farklı verileri ve bu veriler arasındaki ilişkileri analiz etme ve tanımlama işlemidir. Veri modelleme kavramları, verilerin işletmede kullanıldığı gibi görsel temsillerini oluşturur ve işlemin kendisi, veri gereksinimlerinizi anlamada ve netleştirmede bir alıştırmadır.
+
+Veri modelleme neden önemlidir?
+Verilerinizi modelleyerek, sahip olduğunuz verileri, bunları kullanma biçiminizi ve kullanım, koruma ve idare ile ilgili gereksinimlerinizi belgelersiniz. Veri modelleme üzerinden kuruluşunuz:
+
+BT ekibiniz ile kurumsal ekipleriniz arasındaki iş birliği için bir yapı oluşturur
+
+Veri gereksinimlerini ve kullanımlarını tanımlayarak iş süreçlerini geliştirme fırsatlarını ortaya koyar.
+
+Başlangıçta uygun planlama üzerinden BT ve süreç yatırımlarında zaman ve para kazandırır.
+
+Veri bütünlüğünü geliştirerek hataları (ve hataya açık gereksiz veri girişini) azaltır.
+
+Kapasite ve büyüme için planlama yaparak veri alma işleminin ve analizlerin hızını ve performansını artırır.
+
+İş hedeflerinize göre özelleştirilmiş hedef ana performans göstergelerini ayarlar ve izler.
+
+Dolayısıyla yalnızca veri modelleme ile elde ettikleriniz değil, bunu elde etme biçiminiz de önemlidir. Sürecin kendisi önemli avantajlar sağlar.
+
+Veri Modellemede İlişkiler
+
+Kabaca ilişki türleri üç tanedir. Bunlar 1-n, n-n ve 1-1’dir.
+
+1-n (Bire çok) İlişki: Bunun anlamı, ilişki kurulan sütun değerlerinin bir tabloda eşsiz, diğer tabloda ise birden fazla olmasıdır. Yani, ilişkinin “1” tarafı tamamen tekil değerler içerir, buna karşılık diğer tabloda bu tekil değere karşılık birden fazla kayıt vardır.
+1-1 (Bire bir) İlişki: Bu ilişkiye sahip tablolar, tekil değerler içeren ortak sütun üzerinden birbirine bağlıdır.
+n-n (Çoka çok) İlişki: iki tabloda da çoklu değerler olduğu zaman ilişki kurulmasına olanak tanınır. 
+
+
+
+Varlık-İlişki Sembolleri
+
+VARLIK-İLİŞKİ MODELİ (ENTİTY-RELATİONSHİP MODEL)
+
+
+Kavramsal tasarım, veritabanında tutulacak verilerin daha üst seviyede gösterilmesi için kullanılır.
+Kavramsal tasarım için en çok kullanılan model ER (Entity-Relationship Model) <-> (Varlık-İlişki Modeli)
+Varlık-İlişki Sembolleri
+
+vtys
+
+Varlık : Modelin en temel üyesidir. Var olan ve benzerlerinden ayırt edilebilen her şey varlıktır. Örneğin; kitap, öğrenci, araba birer varlıktır. Modelin içerisinde varlık kümesi dikdörtgen ile gösterilir. Veritabanı olarak düşünülürse her bir tablo bir varlık kümesidir.
+Nitelik : Varlıkların her bir özelliği bir nitelik olarak ifade edilir. Örneğin, öğrenci adı ve numarası öğrenci varlığının nitelikleridir. Modelin içerisinde nitelikler oval ile gösterilir ve içerisine niteliğin ismi yazılır. Veritabanı olarak düşünülürse tablonun her bir sütunu bir niteliği gösterir.
+Reklamlar
+
+
+
+id -> birincil anahtar primary key
+
+ad, gorev,maas ->öznitelikleri
+
+Çok Değerli Özellik - ERD Simgesi Birden çok değerli özellik, birden fazla değere sahip olabilir.                                                     Örneğin, çalışan bir varlığın birden fazla beceri değeri olabilir.
+
+ 
+
+Türemiş Öznitelik - ERD SembolüTüretilmiş bir özellik başka bir niteliğe dayalıdır.                                                                         Örneğin, bir çalışanın aylık maaşı, çalışanın yıllık maaşına dayanır.
+
+ 
+
+İlişki : Farklı varlıklar arasındaki ilişkileri ifade eder. Örneğin; öğrenci ve dersler ayrı varlık kümeleridir ama öğrenciler ders almak zorunda olduğu için iki varlık arasında ders alma ilişkisi vardır.
+
+Model içerisinde ilişkiler baklava dilimi ile gösterilir ve içerisine ilişkinin adı yazılır.
+Tablolar arasında kullanılan ilişkiler 1-1, 1-n, n-1, n-m ile gösterilir.
+vtys2.PNG
+
+Bire bir – Örnek evlilik gibi bir adam bir kadınla evli olması. ‘1: 1’ olarak işaretlenir.
+Bire bir
+
+Birden çok – Bir bölüm ve bu bölümde okuyan birden çok öğrenci, ‘1: N’ olarak işaretlenir.
+Bire birçok
+
+Birçok bire
+
+Çok-çoklu –  N dersi N öğrenci alabilir
+Birçok çoğa
+
+İlişki tiplerinin farklı gösterimi
+
+
+Zayıf (Weak) varlık türü – Mevcutluğu diğer varlık türüne bağlı olan varlık türüdür. Eğer bir varlık kümesinin niteliklerinin tümü alınsa bile bir anahtar oluşturmuyorsa buna zayıf varlık kümesi denir.
+
+
