@@ -1,1 +1,1 @@
-# Akademi Pair Odev Dosyalari
+# Akademi Pair7 Odev Dosyalari

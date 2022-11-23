@@ -1,0 +1,80 @@
+NORMALİZASYON 
+
+Normalizasyon; veri tabanı tasarım aşamasında veri tekrarını, veri kaybını veya veri yetersizliğini önlemek için gerçekleştirilen işlemlerdir. 
+
+Normalizayon uygulanan veri tabanlarının performansı artar, sabit diskteki boyutu azalır ve tablolarda ki satır ve sütun sayısı azalacağından veri tekrarı önlenmiş olur. Özellikle silme, güncelleme gibi işlemler de çıkabilecek sorunlar büyük oranda azaltılmış olur. 
+
+ 
+
+Normal Formlar 
+
+Normalizasyonun her bir kuralı yani seviyeleri normal form olarak adlandırılır. Bu seviyeler gereksiz veri tekrarlarını ne derecede engellediği ve tutarlılığı ne kadar sağladığına bağlı olarak derecelendirilir. Seviye yükseldikçe veri tutarlılığı artar, veri tekrarı düşer. 
+
+Normalizasyon seviyeleri 1NF (Birinci Normal Form), 2NF, 3NF, BCNF(Boyce-Codd Normal Form, 3.5NF’de denir), 4NF şeklinde adlandırılır ve yukarı doğru devam eder. 
+
+ 
+
+UDF(Normal Olmayan Form) 
+
+Bir veya daha fazla tekrarlanan tekrarlanan gruplar içeren 2 boyutlu olmayan tablolardır. 
+
+ 
+
+1NF(1. Normal Form) 
+
+Bir veri tabanının 1NF olabilmesi için aşağıdaki özellikleri karşılayabilmesi gerekir: 
+
+Aynı tablo içinde tekrarlayan kolonlar bulunamaz. 
+
+Her kolonda yalnızca bir değer bulunabilir . 
+
+Her satır bir eşsiz anahtarla tanımlanmalıdır. 
+
+
+ 
+
+2NF (2.Normal Form) 
+
+Bir veri tabanının 2NF olabilmesi için aşağıdaki özellikleri karşılayabilmesi gerekir: 
+
+Tablo 1NF olmalıdır. 
+
+Anahtar olmayan değerler ile kompozit (bileşik) anahtarlar arasında kısmi (partial) bağımlılık durumu oluşmamalıdır. Kısmi bağımlılık durumu, anahtar olmayan herhangi bir değer kompozit bir anahtarın yalnızca bir kısmına bağıl ise oluşur.  
+
+Herhangi bir veri alt kümesi birden çok satırda tekrarlanmamalıdır. Bu tür veri alt kümeleri için yeni tablolar oluşturulmalıdır. 
+
+Ana tablo ile yeni tablolar arasında, dış anahtarlar (foreign key) kullanılarak ilişkiler tanımlanmalıdır. 
+
+3NF(3.Normal Form) 
+
+Bir veri tabanının 3NF olabilmesi için aşağıdaki özellikleri karşılayabilmesi gerekir: 
+
+Veri tabanı 2NF olmalıdır, 
+
+Anahtar olmayan hiç bir kolon bir diğerine (anahtar olmayan başka bir kolona) bağıl olmamalı ya da geçişken fonksiyonel bir bağımlılığı (transitional functional dependency) olmamalıdır. Başka bir deyişle her kolon eşsiz anahtara tam bağımlı olmak zorundadır. 
+
+Veri tabanımızı 3NF şartlarına uydurabilmek için anahtar olmayan ve eşsiz anahtara tam bağımlı olmayan tüm kolonları kaldırmalıyız. 
+
+ 
+
+4NF(4.Normal Form) 
+
+Bir veri tabanının 4NF olabilmesi için aşağıdaki özellikleri karşılayabilmesi gerekir: 
+
+Veri Tabanı 3NF olmalıdır, 
+
+Çok-değerli bağımlılıkları (Multli-Valued dependency) olmamalıdır. 
+
+Multi-Valued Dependency: Bu durum bir ya da daha çok veri satırının var olması, aynı tabloda başka bir (ya da daha çok) veri satırının bulunmasını gerektirdiğinde ortaya çıkar. Örneğin, bir yazılım firması düşünelim. Geliştirdikleri yazılımların masaüstü bilgisayarlar için olanlarını tek-kullanıcılı ve çok-kullanıcılı olarak iki versiyonla piyasaya sunuyor olsunlar. Diyelim ki bu firmanın geliştirdiği tüm yazılımları barındıran bir veri tabanı oluşturuyoruz. Bu veri tabanında bir masaüstü yazılımın tek-kullanıcılı versiyonunu eklediysek mutlaka bir başka satırda aynı yazılımın çok-kullanıcılı versiyonu için de bir kayıt açılmış olmak durumundadır… 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
