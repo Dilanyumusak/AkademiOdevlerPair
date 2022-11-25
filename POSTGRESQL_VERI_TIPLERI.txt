@@ -1,0 +1,235 @@
+POSTGRESQL VERİ TİPLERİ
+
+Veri tiplerini;
+
+1-Sayısal Türler
+2-Para Türleri
+3-Metin Türleri
+4-Tarih Saat Türleri
+5-Binary Data Türleri
+6-Boolean (Mantıksal) Veri Tipi
+7-Geometrik Türler
+8-Ağ Adres Türleri
+9-JSON VE XML Veri Tipleri
+10-Diziler 
+11-Range Tipi Veriler
+12-DOMAIN Veri Tipleri
+13-OBJECT IDENTIFIER (OID) Veri Tipleri
+14-BIT String Tipi Veriler
+15-UUID Veri Tipi
+16-Kompozit Veri Tipi
+
+başlıkları altında inceleyebiliriz.
+
+1-Sayısal Türler
+
+Sayısal veri tiplerini tam sayı, virgül sonrası hassasiyeti sabit veya değişken rasyonel sayılar ile seri tipindeki sayılar olarak sınıflandırabiliriz.
+
+a-Tamsayı Tipleri
+
+a1- Integer (4 bytes): Veritabanında kapladığı alan ve performansı dikkate alındığında en iyi dengeyi sağladığı için, çok fazla kullanılan bir veri türüdür.(-2147483648 ile +2147483647 aralığındaki tam sayılar)
+a2- Smallint (2 bytes): Küçük değerlerde tamsayı verilerini saklamak için kullanılır.(-32768 ile +32767 aralığındaki tam sayılar)
+a3- BigInt (8 bytes): Büyük değerlerde tamsayı veriileri saklamak için kullanılan veri türüdür. Integer alanının yetersiz kaldığı durumlarda tercih edilmelidir.(-9223372036854775808 ile +9223372036854775807 aralığındaki tam sayılar)
+
+b-Rasyonel Sayılar
+
+PostgreSQL’de rasyonel sayıları da saklamak için birkaç veri tipi vardır. Bunları virgülden sonraki hassasiyet seviyesini, veri tipinin tanımlanması aşamasında belirlememize veya serbest bırakmamıza göre sınıflandırabiliriz.
+
+b1-Değişken Hassasiyetli Sayılar
+
+Bu türdeki veri tipleri kesinliğin gerekli olduğu ondalıklı sayılarda kullanılmalıdır. Matematiksel işlem sonuçlarını saklamada tercih edilmelidir. Performans olarak tam sayı tiplerine oranla yavaştır. Değişken hassasiyeti kullanıcı tarafından belirlenmektedir.
+
+Decimal ve Numeric tamamen birbirinin aynı özelliklere sahip veri tipleri olup SQL standartlarını sağlayabilmek için ayrı ayrı tanımlanmışlardır. Decimal ve numeric veri tiplerinde saklanacak toplam hane sayısına karar veririz. Bunun için veri tipini tanımlarken precision ve scale tanımlamalarını kullanırız.
+	
+	 			Tanım						Değer Aralığı
+Decimal		Kullanıcı tanımlı hassasiyet, mutlak	  Ondalık ayracı öncesinde 131072 haneye kadar sonrasında 16383 haneye kadar
+Numeric		Kullanıcı tanımlı hassasiyet, mutlak	  Ondalık ayracı öncesinde 131072 haneye kadar sonrasında 16383 haneye kadar
+
+Aşağıdaki şekilde tanımlamalar yapılabilir:
+
+NUMERIC(precision, scale)
+NUMERIC(precision)
+NUMERIC
+
+b2-Kayan Nokta Türleri (floating-point types)
+
+Real ve Double Precision veri türleri değişken hassas sayısal türlerdir. Bazı değerler bu veri tiplerinden tam olarak dönüştürülemez ve yaklaşık değer olarak depolanır.
+
+Kolonda azami saklama boyutlarına kadar istenen uzunlukta veri saklanabilir. Yani ondalık ayracının bulunduğu yer değişken olabilir. Örneğin aynı alanda 12.345 ve 1234.5 saklayabilmek gibi. İkinci tanımlamada ondalık toplam hane sayısı es geçilerek sıfır tanımlanmış olmakta yani hane sayısı belirlenmiş tam sayı tanımlanmış olmaktadır. İlkinde ise toplam haneye precision’la ve her değerin içinde olabilecek ondalık hane sayısına scale ile karar verilir. Bu alana düşen sayısal olmayan değerlerin tanımlanabilmesi için NaN (Not a Number: Sayı değil) değeri de kullanılabilir. NaN değeri kullanılarak yapılan tüm işlemler NaN’la sonuçlanır.
+
+Veri Tipi		Boyut				Tanım				Değer aralığı
+real			4 byte	 	ondalık hassasiyeti, mutlak değil		6 ondalık hane
+double precision	4 byte		değişken ondalık hassasiyeti, mutlak değil	15 ondalık hane
+
+Real ve double veri tipleri, tanımı gereği rasyonel olarak tam olarak ifade edilemeyen bunun yerine değerine en yakınsanmış değer olarak kaydedilebilen sayılar için kullanılır. Bu sebeple kesin hesap gerektiren veri tiplerinde bunlar yerine numeric veri tipinin kullanılması tavsiye edilir. Bununla birlikte bu veri tipinde numeric tipine ilave olarak sonsuzluk değerleri de NaN’la birlikte saklanabilmektedir. Hem real hem double veri tipi “Infinity”, “-Infinity” ve “NaN” değerlerini alabilmektedir.
+
+PostgreSQL, float tipini de desteklemektedir. Buna göre aslında float (1) ve float(24) aralığındaki değerler real’a; float(25) ve float(53) aralığındaki değerler de double’a karşılık gelmektedir.
+
+Sayısal değerlerde round fonksiyonu kullanıldığında yuvarlama işlemine verdikleri tepkiler farklıdır. Nnumeric bir kolon yuvarlandığında sıfırdan en uzak tam sayıya (yani yukarı) yuvarlanırken, double türünde bir sayı yuvarlandığında (aşağı veya yukarı olduğuna bakılmaksızın) en yakın çift sayıya yuvarlanır.
+
+c-Seri Tipleri
+
+Bu türler Smallserial, Serial, ve Bigserial veri tipleridir. Bu veri tipinden bir kolon oluşturmak istediğimizde PostgreSQL bir adet Sequence oluşturarak sahipliğini, kolon oluşturmak istediğimiz tablo yapar ve kolonun varsayılan değeri olarak oluşturulan Sequence'i verir.
+
+Bir kolon eğer ID kolonu olarak kullanılacaksa SERIAL tipinde tanımlanabilir. Bu durumda kolonu integer tanımlayıp bu kolon üzerinde bir SEQUENCE oluşturmakla aynı işlem yapılmış olunur. Yine integer (ya da int4) tipinde olduğu gibi serial tipi de aslında serial4’e denktir. Daha az yer kaplayan serial2 (veya smallserial) ve daha geniş değer aralığında çalışabilen serial8 (veya bigserial) de kullanılabilir.
+
+2-Para Türleri
+
+Money veri tipi sabit hassasiyetli bir para değerini saklamak için kullanılır. Bu veri tipinde geçerli olan para tipi bilgisi ve saklanacak verinin ondalık hassasiyeti veritabanının lc_monetary ayarında belirlenir. Kuruş hassasiyeti de diyebileceğimiz bu değer varsayılan olarak virgül sonrası 2 hanedir.
+
+Bu veri tipini kullanırken dikkatli olunması gereken durumlar, özellikle farklı para birimindeki değerlerin aynı tabloya girilmesi halinde ortaya çıkar. Farklı para birimindeki bir tablo yedeği farklı yerel para birimi ayarına sahip bir veritabanına atılırken ya da veritabanında ayarlanandan farklı para biriminde bir nesneyi çalışılan tabloya yazarken dikkat edilmelidir.
+
+Money türünde kaydedilen veriler farklı veri tiplerine dönüştürülebilir. Bununla birlikte içinde parasal varlıkları kaydettiğimiz başka veri kolonlarının money tipine dönüşümlerinde dikkat edilmelidir.
+
+Örneğin veri float’tan numeric’e dönüşürken yuvarlama hatalarıyla karşılaşma ihtimalimiz yüksektir. Bunu önlemek için parasal varlıklar float tipinde kolonlarda saklanmamalıdır. Money tipini benzer dönüşüme soktuğumuzda ise böyle bir sorun yaşamayız.
+
+Son olarak money tipinde bir parasal varlıkla yapılan çarpma / bölme işlemleridir. Money tipindeki veriler integer tipinde bir veriye bölündüğünde ondalık kısımdaki veri kaybedilir ve tam sayı sonuç elde edilir. Oysa aynı tam sayının real ya da double karşılığı kullanılırsa kuruş bilgisi kaybedilmeden hesaplama tamamlanır. Yine money cinsinden bir veri money cinsinden başka bir veriye bölünürse sonuç double olarak elde edilir, yani sonuç verimiz artık money cinsinde değildir, numerik bir değere dönüşür. Bunun sebebi para birimlerinin birbirlerini götürmesidir.
+
+3-Metin Türleri
+
+Hem char, hem de varchar metinsel verileri saklamak için kullanılan veri tipleridir. Varchar ve char tanımlanma aşamasında verilen n karakteri saklarken, n’den daha uzun bir metin girişi olduğunda hata döndürerek metni n karaktere kırparlar. Varchar(n) tanımlı bir kolonda kolon uzunluğundan kısa metinler girildiğinde, girilen metin kadar fiziksel yer harcarken, char(n) tanımlı kolonda metnin kalanı boşluk karakteri ile doldurularak n karaktere tamamlanır ve n karakterlik fiziksel yer harcar. Diğer veri tipi olan text için bir karakter sınırı tanımlaması yapılmaz. Değişken boyutlu metinler hata vermeksizin kabul edilebilir.Sayısal tiplere göre okuma oldukça yavaştır.
+
+character varying(n), varchar(n):	değişken uzunluklu sabit boyutlu
+character(n), char(n)		:	sabit uzunluklu, boş alanlar boşlukla doldurulur
+text				:	değişken sınırsız uzunluklu
+
+char(n) ve varchar(n) arasında ciddi bir performans farkından ziyade diskte kaplanan alanda farklılık vardır. Bununla birlikte char(n) üç metin tipi içinde en maliyetli olan olarak varsayılabilir.
+
+4-Tarih Saat Türleri
+
+a-Timestamp : Tarih ve saatin birlikte tutulduğu veri tipidir. Mikrosaniye hassasiyetinde veri tutmamıza imkan verir.
+b-Date : Sadece tarih verisinin tutulduğu veri tipidir. Saatin önemsiz olduğu durumlarda tercih edilmelidir.
+c-Time : Sadece saat verisinin tutulduğu veri tipidir.
+d-Interval : Zaman aralığı saklamak için kullanılan veri tipidir.
+
+5-Binary Data Türleri
+
+Binary tipindeki verileri saklamak için PostgreSQL bytea veri tipini kullanır. Bytea veri tipi input ve output için iki formatı destekler: hex ve escape. Her iki format da daima input olarak kabul edilirken output için varsayılan format hex’tir.
+
+SQL standardı BLOB veya BINARY LARGE OBJECT olarak adlandırılmış farklı bir binary veri formatını tanımlamaktadır. Input formatı bytea’den farklıdır fakat sunulan fonksiyon ve operatörler çoğunlukla aynıdır.
+
+Hex veri formatında binary veriler bit başına 2 hexadecimal hane olarak saklanır ve veri stringinin önünde ‘\x’ ifadesi konularak escape formatından ayırt edilmesi sağlanır. Bu format çoğu uygulama ve protokol tarafından kabul edilen bir format olduğu ve bu sebeple dönüşümü daha hızlı olduğu için kullanımda tercih edilmesi tavsiye edilir.
+
+Escape formatı ise geleneksel PostgreSQL bytea tipi formatıdır. Bu format, binary veri stringini ascii karakter dizisi olarak işlerken ascii olarak temsil edilemeyen karakterler için kaçış karakteri karşılıklarını kullanır. Böylece bu formatta da dönüşüm sağlanabilmiş olur.
+
+6-Boolean (Mantıksal) Veri Tipi
+
+3 farklı değer alabilir. "true" , "false" ve "Null"
+
+Bu veri tipinde true yerine yes, on, t ya da 1 kabul edilebilirken false yerine de no, off, f ve 0 kabul edilmektedir. Büyük - küçük hassasiyeti aranmaz.
+
+7-Geometrik Türler
+
+Bu veri türleri iki boyutlu uzaysal nesneleri temsil eder.
+
+point	düzlemde bir nokta
+line	sonsuz doğru
+lseg	sonlu doğru parçası
+box	dikdörtgensel kutu
+path	kapalı hat (polygon)
+path	açık hat (polyline)
+polygon	polygon
+circle	çember
+
+8-Ağ Adres Türleri
+
+Ağ adreslerini depolamak için düz metin türleri yerine bu türleri kullanmak daha iyidir; çünkü bu türler hatalı veri girişine izin vermez, veri uyumsuzluğu hatası olarak geri döner.
+
+cidr		IPv4 ve IPv6 ağlar
+inet		IPv4 ve IPv6 ağlar / sunucular
+macaddr		MAC adresleri
+macaddr8	MAC adresleri (EUI-64 formatı)
+
+9-JSON (JavaScript Object Notation) XML Veri Türleri
+
+a-JSON: JSON veri türleri; JSON türünde veri saklamak için kullanılan bir veri tipidir. Metin tabanlı, dilden bağımsız ve kendine özgü bir formatı bulunur. Diğer formatların aksine JSON, insan tarafından okunabilen bir metindir.
+
+PostgreSQL’de JSON verileri saklayabilmek için json ve jsonb isminde iki veri tipi bulunmaktadır. Bu iki veri tipi neredeyse birbirlerinin birebir aynısı girdileri kabul etmektedir. Fakat aralarındaki en büyük fark verimlilikleridir. JSON veri tipi, girdi verisini aynen saklamaktadır. Bu yüzden JSON işleme fonksiyonları her işlemde veriyi yeniden parçalarına ayrıştırarak (re-parsing) işler. Buna karşın JSONB ise JSON verileri kaydederken parçalarına ayırır ve binary olarak saklar. Bu sebeple verilere fonksiyon uygulanması çok daha hızlı bir hal alır. Bu format kullanıldığında JSON veriler ayrıca indekslenebilir hale gelmektedir.
+
+Çoğu durumda uygulamalar özel gereklilikler yoksa verilerin json yerine jsonb olmasını tercih etmektedir. PostgreSQL, veritabanında sadece bir encoding’e izin vermektedir. Dolayısıyla, veritabanı dil kodlaması UTF8 değilse, JSON tipleri için spesifikasyona katı bir şekilde uymaları mümkün değildir. Bu yüzden json verilerin içine veritabanı encoding ayarına göre izin verilmeyen karakterlerin dahil edilmesi mümkün olmayacaktır. Buna karşın, veritabanı encodingine göre izin verilen fakat UTF8’de olmayan karakterlere ise izin verilmektedir.
+
+b-XML: PostgreSQL veritabanları, benzer şekilde, XML türündeki verilerin saklanmasına da izin verir. Bunun için metinsel text türü veriler kullanılabileceği gibi xml veri tipi de kullanılır ve böylece xml dökümanlarının gerektirdiği uyumluluk kontrolü de PostgreSQL tarafından sağlanabilir. Bu veri tipinin getirdiği dahili PostgreSQL fonksiyonları da xml türündeki kayıtlar üzerinde yapılabilecek işlemlerde yardımcı olur.
+
+Metinsel verilerden XML üretmek için XMLPARSE fonksiyonu kullanılabilir.
+
+Bunun tersi de mümkündür, PostgreSQL kullanarak XML cümleciğinden metin de üretilebilir. Bunun için XMLSERIALIZE fonksiyonu kullanılır. Çıktının tipi de bu fonksiyon içerisinde belirtilebilir. XMLSERIALIZE kullanarak character, character varying veya text tipinde çıktılar üretmek mümkündür.
+
+10-Diziler 
+
+PostgreSQL bir tablonun tipinin dizi olmasına izin vermektedir. Diziler, PostgreSQL’deki herhangi bir dahili ya da kullanıcı tanımlı tipten, enum’dan, kompozit tipten, range veya domain’den oluşturulabilir.
+
+Bir kolonun tipi tanımlanırken köşeli parantezlerle yapılan tanımlamalar dizi oluşturmaktadır. Köşeli parantezlerin içi boş bırakılarak boyutu belirsiz bir dizi, içi doldurularak tanımlı boyutlu diziler oluşturulabilir.
+
+Ayrıca SQL standartlarının gerektirdiği ARRAY anahtar kelimesi de değişkenin yanında kullanılarak dizi tanımlanması sağlanabilir. 
+
+11-Range Tipi Veriler
+
+Range tipindeki veriler adından anlaşılabileceği üzere tek değeri değil, bir değer aralığını tutarlar. PostgreSQL’de sayısal ve tarihsel veri tiplerinin range tipleri bulunmaktadır. Örneğin int4range tam sayı aralığını, tsrange ise bir zaman aralığını saklamaya yarar. Bunlara ilave olarak CREATE TYPE fonksiyonu kullanılarak kullanıcı tanımlı range tipleri de oluşturulabilir.
+
+Örneğin tsrange tipinde bir range verisi '[2010-01-01 14:30, 2010-01-01 15:30)' şeklinde yazılabilir. Burada [ ve ] şeklindeki köşeli parantezler dahil, ( ve ) şeklindeki parantezler ise değer hariç anlamına gelir. Yani burada ilk tarihin dahil olduğu fakan son tarihe kadar süren bir zaman aralığı ifade edilmektedir. Range tipi veriler aşağıda sunulmuştur.
+
+12-DOMAIN Veri Tipleri
+
+Domain tipi başka varolan tiplerin kullanılmasıyla oluşturulan kullanıcı tanımlı bir veri tipidir. Bu veri tipine sahip kolonlarda opsiyonel olarak alabileceği değerleri kısıtlayan CONSTRAINT’ler oluşturulabilir. Bunun haricinde kendisini oluşturan tipler gibi davranacaktır. Bu yüzden domain olarak oluşturulan veri tiplerine uygulanabilecek operatör ve fonksiyonlar da kendisini oluşturan tiplere göre değişecektir.
+
+13-OBJECT IDENTIFIER (OID) Veri Tipleri
+
+PostgreSQL tarafından sistem tablolarında primary key olarak kullanılan veri tipleridir. Kullanıcı, bir tabloyu oluştururken WITH OIDS ifadesi eklemezse, oluşturulan tabloda OID kolonu bulunmadan yaratılır. Oluşturulan tüm tablolara oid eklenmesi için postgresql.conf’da default_with_oids konfigürasyon değişkeni de aktifleştirilebilir. Aslında OID veri tipi 4 byte’lık bir tam sayıdır (int4). Değer aralıkları küçük olduğu için, büyük veritabanlarında özellikle kullanıcılar tarafından oluşturulmuş tablolarda Primary Key olarak kullanılması önerilmez. OID tipindeki kolonların en yerinde kullanım alanı yine sistem tablolarına referanslar olacaktır.
+
+OID değerleri karşılaştırma için kullanılmalarının ötesinde integer tipine dönüştürülerek çeşitli integer operasyonlarına tabi tutulabilirler. OID, bir satırın object-identifier kolonudur. Eğer bir tablo oluşturulurken WITH OIDS ifadesi eklenirse oluşturulur. Öte yandan postgresql.conf konfigürasyon ayarlarında bu durum için default_with_oids parametresi bulunmaktadır. Bu ayar varsayılan off değerinden on olarak değiştirilirse tüm yeni oluşturulan tablolar WITH OIDS ifadesi girilmeden oid kolonuyla birlikte yaratılır. oid kolonunun veri tipi de oid’dir.
+
+Ayrıca tabloların da kendi içinde kaydında kullanılan tableoid kolonu bulunmaktadır ve yine oid veri tipindedir. TABLEOID değeri, ilgili satırı içeren tablonun oid değeridir. Özellikle inheritance ile oluşturulmuş tablolardan yapılan sorgularda işlevseldir. Bu tür durumlarda bir satırın parent tablosunu söylemek mümkün hale gelir.
+
+Sistem tarafından kullanılan bir başka id tipi de transaction id’si olarak bilinen xid’dir. Her tabloda XID veri tipinde XMIN ve XMAX kolonları bulunur. XID kolonları 32-bit boyutundadır.
+
+xmin: Bir satır üzerinde yapılan her değişiklik (insert, update, delete) o satırın yeni bir versiyonunu yaratır ve bu durumda yeni bir Transaction ID ataması yapılır. XMIN, insert transaction’ı için satırın aldığı kimlik değeridir (transaction id).
+
+xmax: Henüz silinmemiş satırda 0 olan veya silinmiş (DELETE) bir satırda satıra atanan transaction id değeridir.
+
+Üçüncü bir sistem id’si komut id’si (command identifier) olarak bilinen CID'dir. Bu tipteki kolonlar da CMIN ve CMAX olup aynı XID gibi 32-bit yer kaplar.
+
+cmin: Satır eğer INSERT transaction’ı ile geldiyse komut ID’si (command identifier).
+
+cmax: Satır eğer DELETE transaction’ı ile geldiyse komut ID’si (command identifier).
+
+Son sistem id tipi ise tablo satırları için kullanılan tuple (veya row) identifier yani TID’dir. Bu sistem kolonu olan CTID’nin veri tipidir. Bir TID, blok numarası ve bloktaki satır indeksinden oluşan bir değer çiftidir. TID, bir satırın, tablodaki fiziksel konumunu tanımlamak için kullanılır.
+
+ctid: Bir satırın ctid değeri kullanılarak o satıra hızlıca erişilebilir. Bununla birlikte eğer öncesinde VACUUM FULL işlemi uygulanarak satır güncellendiyse veya taşındıysa CTID değeri de değişecektir. Dolayısıyla CTID kolonu, uzun vadeli bir ID kolonu olarak güvenilir değildir. Bu tür mantıksal bir tespit işinde, OID kolonu hatta daha da iyisi kullanıcının tanımladığı bir seri no kolonu çok daha işlevseldir.
+
+OID kolonlar 32 bit ifadeler olup (uygun önlemler uygulanmazsa) unique değildir. Cluster bazında atanan değerler olan oid kolonlarının değerleri incelendiğinde, uzun zamandır çalışan bir clusterda sarmalama sorunu yaşanabilmektedir. Doğru bir uygulamada, tablodaki satırların versiyon tespit çalışmalarında kullanmak amacıyla bir sequence üretici şiddetle tavsiye edilmektedir. Ya da aşağıdaki önlemleri almak şartıyla OID kullanımı da düşünülebilir:
+
+Her tablonun OID kolonu üzerinde bir UNIQUE constraint tanımlanmalıdır. Tablonun maksimum satır sayısı (2^32) yaklaşık 4 milyarı (hatta performans sorunları sebebiyle bunun da yarısını) aşmamak kaydıyla bu tür bir çözüm her satır için takip edilebilir unique bir oid değeri üretecektir.
+Eğer veritabanı çapında bir id kolonuna ihtiyaç varsa, tableoid ve oid’nin birleşiminden oluşan bir kolon oluşturulmalıdır.
+Tüm bunların yapılabilmesi için tablolar yukarıda anlatılan şekillerden birisini kullanarak WITH OID seçeneğiyle birlikte yaratılmalıdır.
+
+14-BIT String Tipi Veriler
+
+Bunlar 0 ve 1’lerden oluşan veri dizileridir. PostgreSQL’de bu tip verileri saklamak için bit(n) ve bit varying (n) kullanılabilir. Burada n değeri pozitif tam sayı olup metinsel verilerdeki gibi veri kolonuna girilebilecek azami dizi uzunluğunu ifade eder.
+
+bit tipinde verinin mutlak olarak n uzunluğunda olması beklenir ve daha kısa metin dizilerinde hata üretir. Bununla birlikte bit varying n uzunluğa kadar herhangi boyutta olabilir. Eğer n değeri girilmezse bit tek karakterlik bit(1) olarak çalışırken bit varying (PostgreSQL alan limitleri ölçüsünde) herhangi bir uzunluktaki bitleri kabul edebilir.
+
+15-UUID Veri Tipi
+
+UUID'ler belirli bir algoritma kullanarak benzersiz bir sayı üretmeyi sağlar. Bu sayı 128 bitlik ve 36 karakter uzunluğundadır. Veri gösteriminde standart olarak 8-4-4-4-12 formatında ve hepsi küçük harf olarak gösterilir.
+
+16-Kompozit Veri Tipi
+
+Bu veri tipi, var olan birden fazla veri tipinin tek bir veri tipi tanımı altında aynı anda kullanılması gibi düşünülebilir. Bu şekilde tanımlanan kompozit bir veri tipi kendine, bir tablodaki tüm satırın ya da tek bir kolonun temsil edildiği uygulama alanları bulmaktadır.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
