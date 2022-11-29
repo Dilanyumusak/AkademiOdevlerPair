@@ -1,0 +1,189 @@
+SQL Select Komutu ve Örnekleri
+
+Select sorguları, SQL’de en sık kullanılan deyimdir.
+
+SQL SELECT deyimi, verileri  bir veritabanı tablosundan sonuç tablosu biçiminde almak için kullanılır.  Bu sonuç tabloları sonuç kümeleri olarak adlandırılır.  Tüm tabloyu ya da belirli kurallara göre belirli kayıtlar alabiliriz.
+
+SELECT komut deyiminin SELECT yan tümcesiyle, sorgu sonucunda görüntülenmesini istediğimiz sütunları ve isteğe bağlı olarak, sonuç tablosunun üzerinde görmek istediğimiz sütun başlıklarını belirleriz.
+
+Kolon isimlerini SELECT ifadesinden sonra aralarında virgül ile belirtmemiz gerekmektedir.
+FROM nereden olacağı, * tüm veriyi, SELECT ise elde edilen veri üzerinde ne yapılacağını belirtir. SELECT o tablodan veri seçmek için kullanılır. * yerine tabloda belirtilen kolon isimlerini yazarsak, sadece o kolonda olan bilgiyi getirir.
+
+
+
+SQL  SELECT ÖRNEKLERİ
+
+Sorgu 1: Öğrenci tablosundaki tüm kayıtları listeleyin.
+
+select * from ogrenci
+
+
+Sorgu 2: Öğrenci tablosundaki öğrencinin adını ve soyadını ve sınıfını listeleyin.
+ 
+select ograd,ogrsoyad,sinif from ogrenci
+ 
+
+Sorgu 3: Öğrenci tablosundaki cinsiyeti kız (K) olan kayıtları listeleyiniz.
+ 
+select * from ogrenci where cinsiyet='K'
+ 
+ 
+
+Sorgu 4: 
+
+Select Distinct: Özgün sorgular oluşturmak için kullanılır.
+Tabloda sürekli tekrar eden değerler varsa eğer, bu değerlerden birer adet eçebiliriz.
+Tekrar eden değerler karışıklık yaratabilir. Kaç farklı tür değere sahip olduğumuzu Distinct ile öğreniriz.
+
+Öğrenciler tablosundaki sınıfların adını listeleyiniz.(Not her sınıf adı birkez gösterilsin.)
+ 
+select distinct sinif from ogrenci
+ 
+ 
+
+Sorgu 5: 
+
+Select Where: Sütun içerisinde belirli değerlere sahip girdileri gertirmek için kullanabiliriz.
+
+Öğrenci tablosundaki cinsiyeti Kız ve Sınıfı 10A olan öğrencileri listeleyiniz.
+
+select * from ogrenci where cinsiyet='K' and sinif='10A'
+ 
+ 
+
+Sorgu 6: Öğrenci tablosundaki 10A veya 10B sınıfındaki öğrencilerin adını, soyadını ve sınıfını listeleyiniz.
+
+select ograd, ogrsoyad, sinif from ogrenci 
+where sinif='10A' or sinif='10B'
+ 
+ 
+
+Sorgu 7: Öğrenci tablosundaki öğrencinin adını, soyadını ve numarasını okul numarası olarak listeleyiniz. (as kullanım örneği)
+
+select ograd,ogrsoyad,ogrno as 'okul numarası' from ogrenci
+ 
+ 
+
+Sorgu 8: 
+
+Like operatörü: Where ile birlikte kullanılır ve belirtilen özel bir desene uyan kaydın olup olmadığını sorgular. İsminin baş harfi "A" olanlar, doğum yerinin son 3 harfi "bul" olanlar gibi
+
+Öğrenci tablosundaki Adı ‘A’ harfi ile başlayan öğrencileri listeleyiniz.
+
+select * from ogrenci where ograd like 'A%'
+ 
+ 
+
+Sorgu 9: kitap tablosundaki sayfa sayısı 50 ile 200 arasında olan kitapların adını ve sayfa sayısını listeleyiniz.
+
+select * from kitap where sayfasayisi between 50 and 200
+ 
+ 
+
+Sorgu 10: 
+
+in operatörü bize sorgularımızı yazarken bir alanın içerisindeki değerleri bir değerler kümesi içerisinden çekmemize imkân sağlar.
+
+Öğrenci tablosunda adı Fidan, İsmail ve Leyla olan öğrencileri listeleyiniz.
+
+select * from ogrenci where ograd in ('Fidan','İsmail','Leyla')
+ 
+ 
+
+Sorgu 11: Öğrenci tablosundaki öğrencilerden adı A, D ve K ile başlayan öğrencileri listeleyiniz.
+
+select * from ogrenci where ograd like '[ADK]%'
+ 
+ 
+
+Sorgu 12: 
+
+And operatörü: And ile belirtilen şartların tamamı gerçekleşiyorsa o kayıt listelenir, şartlardan bir tanesi bile tutmazsa listelenmez.
+
+Or operatörü: Or ile belirtilen şartlardan en az biri gerçekleşiyorsa o kayıt listelenir, şartlardan hiçbiri gerçekleşmiyorsa o kayıt listelenmez.
+
+Öğrenci tablosundaki sınıfı 9A olan Erkekleri veya sınıfı 9B olan kızların adını, soyadını, sınıfını ve cinsiyetini listeleyiniz.
+
+select ograd,ogrsoyad,sinif,cinsiyet from ogrenci 
+where (sinif='9A' and cinsiyet='E') or (sinif='9B' and cinsiyet='K')
+ 
+ 
+
+Sorgu 13: 
+
+Between And: Arasında ise
+
+Öğrenci tablosunda doğum yılı 1989 olan öğrencileri listeleyiniz.(Not: veritabanında tarihler ay/gün/yıl şeklinde sorgulanır)
+
+select * from ogrenci 
+where dtarih between '01/01/1989' and '12/31/1989'
+ 
+ 
+
+Sorgu 14: Öğrenci numarası 30 ile 50 arasında olan Kız öğrencileri listeleyiniz.
+
+select * from ogrenci 
+where ogrno between 30 and 70 and cinsiyet = 'K'
+ 
+ 
+
+Sorgu 15: 
+
+Order by ile sonuçları istediğiniz sütuna göre dizdirebilirsiniz.Standart olarak sıralamayı azdan çoğa doğru yapar. Eğer sıralamanın çoktan aza doğru olmasını istersek DESC komutu  operatöre eklenmesi yeterlidir. 
+
+Öğrencileri adına göre sıralayınız.
+
+select * from ogrenci order by ograd
+ 
+ 
+
+Sorgu 16: Öğrencileri adına, adı aynı olanlarıda soyadlarına göre sıralayınız.
+
+select * from ogrenci order by ograd,ogrsoyad
+ 
+ 
+
+Sorgu 17: 10A sınıfındaki öğrencileri okul numarasına göre azalan olarak sıralayınız.
+
+select * from ogrenci where sinif='10A' order by ogrno desc
+ 
+ 
+
+Sorgu 18: 
+
+Select Top: İstenilen sayıda kayıt görüntülemek için kullanılır.
+
+Öğrenciler tablosundaki ilk 10 kaydı listeleyiniz.
+
+select top 10 * from ogrenci
+ 
+ 
+
+Sorgu 19: Öğrenciler tablosundaki ilk 10 kaydın ad, soyad ve doğum tarihi bilgilerini listeleyiniz.
+
+select top 10 ograd,ogrsoyad,dtarih from ogrenci
+ 
+ 
+
+Sorgu 20: Sayfa sayısı en fazla olan kitabı listeleyiniz.
+
+select top 1 * from kitap order by sayfasayisi desc
+ 
+ 
+
+Sorgu 21: Öğrenciler tablosundaki en genç öğrenciyi listeleyiniz.
+
+select top 1 ograd,ogrsoyad,dtarih from ogrenci order by dtarih desc
+ 
+ 
+
+Sorgu 22: 10A sınıfındaki en yaşlı öğrenciyi listeyin.
+
+select top 1 ograd,ogrsoyad,dtarih from ogrenci 
+where sinif='10A' order by dtarih
+ 
+ 
+
+Sorgu 23: Öğrencileri sınıflarına göre gruplayarak listeleyin.
+
+select * from ogrenci order by sinif
